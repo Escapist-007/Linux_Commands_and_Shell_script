@@ -17,6 +17,7 @@ fi
 
 
 **`String Comparisons:`**
+
 | Option | Description |
 | ------ | ------ |
 | -n string |	True if length of string is non-zero |
