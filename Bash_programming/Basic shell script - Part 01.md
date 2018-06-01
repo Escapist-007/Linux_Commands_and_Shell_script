@@ -173,6 +173,20 @@ echo $e
  echo $e
 > 12
 ```
+
+If BASH double parenthesis are not used, then the **`test`** command must be used to compare integer variables..
+
+| Option | Description |
+| ------ | ------ |
+| INTEGER1 -eq INTEGER2 | INTEGER1 is equal to INTEGER2 |
+| INTEGER1 -ge INTEGER2 | INTEGER1 is greater than or equal to INTEGER2 |
+| INTEGER1 -gt INTEGER2 | INTEGER1 is greater than INTEGER2 |
+| INTEGER1 -le INTEGER2 | INTEGER1 is less than or equal to INTEGER2 |
+| INTEGER1 -lt INTEGER2 | INTEGER1 is less than INTEGER2 |
+| INTEGER1 -ne INTEGER2 | INTEGER1 is not equal to INTEGER2 |
+
+
+
 > Demo Scripts :
 
 * Using **expr**
