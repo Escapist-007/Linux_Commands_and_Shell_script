@@ -1,4 +1,4 @@
-## <font color=red> Control Constructs in shell</font> 
+﻿## <font color=red> Control Constructs in shell</font> 
 To allow users to automate tasks using shell script programs, BASH provide some basic control constructs for expressing program logic.
 
 #### How to use condition in shell script ?
@@ -102,9 +102,3 @@ Command line arguments can be passed to the shell scripts. There exists a number
 * `$n` ‐ nth argument in `$*` 
 
 > ./script_name arg1 arg2 .... argn
-
-
-
-
-
-
