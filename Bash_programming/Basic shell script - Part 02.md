@@ -102,3 +102,49 @@ Command line arguments can be passed to the shell scripts. There exists a number
 * `$n` ‐ nth argument in `$*` 
 
 > ./script_name arg1 arg2 .... argn
+
+> Demo script :
+
+```sh
+#!/bin/bash
+
+# Name of the script : car_rent.sh
+
+# Check for command line argument
+if [ -z $1 ]; then
+  rental="Unknown vehicle type"
+else
+  rental=$1
+fi 
+
+case $rental in
+"car")     echo "For $rental Tk 20 per k/m";;
+"van")     echo "For $rental Tk 10 per k/m";;
+"jeep")    echo "For $rental Tk 5 per k/m";;
+"bicycle") echo "For $rental Tk 1 per k/m";;
+*)         echo "$rental is not in the list";
+esac
+
+```
+> Output :
+
+```sh
+$ ./car_rent.sh
+Unknown vehicle type
+
+$ ./car_rent.sh car
+For car Tk 20 per k/m
+
+$ ./car_rent.sh van
+For van Tk 10 per k/m
+
+$ ./car_rent.sh jeep
+For jeep Tk 5 per k/m
+
+$ ./car_rent.sh bicycle
+For bicycle Tk 1 per k/m
+
+$ ./car_rent.sh plane
+plane is not in the list
+
+```
