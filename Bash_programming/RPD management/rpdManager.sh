@@ -21,6 +21,55 @@
 
 rpdDownloader(){
 
+	# Input remote user & server's IP
+	echo "Type remote USER name & press [ENTER]:"
+	read remoteUSER
+	echo "Type remote server's IP & press [ENTER]:"
+	read remoteIP
+       
+        echo "Type NAME (prefix) for the rpd file which will be downloaded"
+        read nameRPD
+
+        rpdFILENAME="$nameRPD"_"$(date +%F_%H:%M).rpd"
+
+	remoteLOCATION="$(sshpass -p 'therap123' ssh $remoteUSER@$remoteIP "locate datamodel.sh | grep domains")"
+	remoteDIRECTORY=$(dirname $remoteLOCATION)
+
+
+	# Login to remote server machine & run some commands
+	sshpass -p 'therap123' ssh $remoteUSER@$remoteIP <<EOF
+	 echo "Log into remote machine"
+	 echo -n "Remote User:"
+	 whoami 
+	 echo " "
+
+	 cd $remoteDIRECTORY
+	 echo "Current location in remote machine:"
+	 pwd
+	 echo " "
+
+	 # This commands run in the local machine 
+	 echo "Local user: $(whoami)"
+	 echo "Curent location in local machine: $(pwd)" 
+
+	 # ls -1 | grep datamodel.sh
+	 ./datamodel.sh downloadrpd -O $rpdFILENAME -W biuser123 -SI ssi -U weblogic -P admin123
+	 # ls -1 | grep $rpdFILENAME
+	 exit
+EOF
+        
+        if [[ -z "$remoteDIRECTORY" ]]; then
+          echo "Remote login failed. Check if you have 'sshpass' installed in your pc."
+          echo "Command for installing sshpass: sudo apt install sshpass"   
+	else
+	  echo "Log out from remote machine"
+	  echo " "
+	  echo "Fetching the downloaded rpd file from OBIEE SERVER to LOCAL machine"
+	  scp $remoteUSER@$remoteIP:$remoteDIRECTORY/$rpdFILENAME .
+	  echo " "
+	  echo "Location of the rpd file in local machine:"
+	  readlink -f $rpdFILENAME
+	fi
         
 }
 
