@@ -3,11 +3,11 @@
 ########################################################################
 #  (@)rpdManager.sh
 #
-# NAME	 rpdManager
+# NAME	  rpdManager
 #
-# DESC 	 This script helps to manage the online "rpd" file of BI server in OBIEE 12C
+# DESC 	  This script helps to manage the online "rpd" file of BI server in OBIEE 12C
 #
-# AUTHOR Md Moniruzzaman Monir
+# AUTHOR  Md Moniruzzaman Monir
 #
 ########################################################################
 
@@ -27,15 +27,14 @@ rpdDownloader(){
 	echo "Type remote server's IP & press [ENTER]:"
 	read remoteIP
        
-        echo "Type NAME (prefix) for the rpd file which will be downloaded"
+        echo "Type NAME (only prefix) for the rpd file which will be downloaded"
         read nameRPD
 
         rpdFILENAME="$nameRPD"_"$(date +%F_%H:%M).rpd"
 
 	remoteLOCATION="$(sshpass -p 'therap123' ssh $remoteUSER@$remoteIP "locate datamodel.sh | grep domains")"
 	remoteDIRECTORY=$(dirname $remoteLOCATION)
-
-
+	
 	# Login to remote server machine & run some commands
 	sshpass -p 'therap123' ssh $remoteUSER@$remoteIP <<EOF
 	 echo "Log into remote machine"
@@ -51,10 +50,9 @@ rpdDownloader(){
 	 # This commands run in the local machine 
 	 echo "Local user: $(whoami)"
 	 echo "Curent location in local machine: $(pwd)" 
-
-	 # ls -1 | grep datamodel.sh
+          
 	 ./datamodel.sh downloadrpd -O $rpdFILENAME -W biuser123 -SI ssi -U weblogic -P admin123
-	 # ls -1 | grep $rpdFILENAME
+	 
 	 exit
 EOF
         
@@ -76,6 +74,47 @@ EOF
 # function to Upload the offline rpd file to "BI server"(In server machine) from My pc (local Machine)
 
 rpdUploader(){
+
+        # Input remote user & server's IP
+	echo "Type remote USER name & press [ENTER]:"
+	read remoteUSER
+	echo "Type remote server's IP & press [ENTER]:"
+	read remoteIP
+	echo "Type remote location where rpd file will be copied & press [ENTER]:"
+	read remote_rpd_dir
+	
+	echo "Type name of the offline rpd file & press [ENTER]:"
+	read offlineRPD
+	echo "Type directory of the offline rpd file & press [ENTER]:"
+	read localDIR
+	
+	remoteLOCATION="$(sshpass -p 'therap123' ssh $remoteUSER@$remoteIP "locate datamodel.sh | grep domains")"
+	remoteDIRECTORY=$(dirname $remoteLOCATION)
+	
+	cd $localDIR
+	scp $offlineRPD $remoteUSER@$remoteIP:$remote_rpd_dir
+
+
+	# Login to remote server machine & run some commands
+	sshpass -p 'therap123' ssh $remoteUSER@$remoteIP <<EOF
+	 echo "Log into remote machine"
+	 echo -n "Remote User:"
+	 whoami 
+	 echo " "
+
+	 cd $remoteDIRECTORY
+	 echo "Current location in remote machine:"
+	 pwd
+	 echo " "
+
+	 # This commands run in the local machine 
+	 echo "Local user: $(whoami)"
+	 echo "Curent location in local machine: $(pwd)" 
+
+	 ./datamodel.sh uploadrpd -I $remote_rpd_dir/$offlineRPD -W biuser123 -U weblogic -P admin123 -SI ssi
+	 
+	 exit
+EOF
 	
 }
 
@@ -84,6 +123,7 @@ rpdUploader(){
 
 rpdTransferer(){
 	echo "Transferring ..."
+	echo "Not implemented yet"
 }
 
 
