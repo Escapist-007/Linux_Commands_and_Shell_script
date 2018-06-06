@@ -27,10 +27,11 @@ rpdDownloader(){
 	echo "Type remote server's IP & press [ENTER]:"
 	read remoteIP
        
-        echo "Type NAME (only prefix) for the rpd file which will be downloaded"
+        echo "Type NAME (only prefix) for the rpd file which will be downloaded & press [ENTER]:"
         read nameRPD
 
-        rpdFILENAME="$nameRPD"_"$(date +%F_%H:%M).rpd"
+
+        rpdFILENAME="$nameRPD"_"$(date +%F_%H_%M).rpd"
 
 	remoteLOCATION="$(sshpass -p 'therap123' ssh $remoteUSER@$remoteIP "locate datamodel.sh | grep domains")"
 	remoteDIRECTORY=$(dirname $remoteLOCATION)
@@ -80,10 +81,10 @@ rpdUploader(){
 	read remoteUSER
 	echo "Type remote server's IP & press [ENTER]:"
 	read remoteIP
-	echo "Type remote location where rpd file will be copied & press [ENTER]:"
+	echo "Type remote location (ex: /home/oracle/rpd) where rpd file will be copied & press [ENTER]:"
 	read remote_rpd_dir
 	
-	echo "Type name of the offline rpd file & press [ENTER]:"
+	echo "Type name of the offline rpd file whcih will be uploaded & press [ENTER]:"
 	read offlineRPD
 	echo "Type directory of the offline rpd file & press [ENTER]:"
 	read localDIR
@@ -119,14 +120,6 @@ EOF
 }
 
 
-# function to transfer the online rpd file of one BI server(remote server) to another BI server(remote server)
-
-rpdTransferer(){
-	echo "Transferring ..."
-	echo "Not implemented yet"
-}
-
-
 # function to display different options
 
 showOptions() {
@@ -135,8 +128,7 @@ showOptions() {
 	echo "~~~~~~~~~~~~~~~~~~~~~~~~~"
 	echo "1. Download online RPD file from BI server(remote machine) to my pc"
 	echo "2. Upload offline RPD file from my pc to BI server(remote machine)"
-	echo "3. Transfer onile RPD file from one remote BI server to another remote BI server"
-	echo "4. Quit"
+	echo "3. Quit"
 }
 
 # function to read user's choice
@@ -150,8 +142,7 @@ readChoice(){
 	case $choice in
 		1) rpdDownloader ;;
 		2) rpdUploader ;;
-		3) rpdTransferer ;;
-		4) exit 0;;
+		3) exit 0;;
 		*) echo "Incorrect choice"
 	esac
 }
